@@ -21,6 +21,7 @@ public class Consumer {
 
   ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
 
+
   public Consumer(String consumerName, DataSource dataSource, String topic, MessageHandler messageHandler, int pollingInterval, TimeUnit timeUnit) {
     this.consumerName = consumerName;
     this.dataSource = dataSource;

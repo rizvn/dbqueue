@@ -21,6 +21,7 @@ public class ConsumerTest {
     dataSource.setUsername("postgres");
     dataSource.setPassword("password");
     dataSource.setDefaultAutoCommit(false);
+    dataSource.setMaxActive(20);
 
     producer = new Producer(dataSource);
   }
