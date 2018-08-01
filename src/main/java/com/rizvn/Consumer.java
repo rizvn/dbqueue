@@ -18,15 +18,17 @@ public class Consumer {
   MessageHandler messageHandler;
   int pollingInterval;
   TimeUnit timeUnit;
+  String topic;
 
   ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
 
-  public Consumer(String name, DataSource dataSource, MessageHandler messageHandler, int pollingInterval, TimeUnit timeUnit) {
+  public Consumer(String name, DataSource dataSource, String topic, MessageHandler messageHandler, int pollingInterval, TimeUnit timeUnit) {
     this.name = name;
     this.dataSource = dataSource;
     this.pollingInterval = pollingInterval;
     this.timeUnit = timeUnit;
     this.messageHandler = messageHandler;
+    this.topic = topic;
   }
 
   public void start(){
@@ -41,9 +43,11 @@ public class Consumer {
     try(Connection connection = dataSource.getConnection()) {
       connection.setAutoCommit(false);
       Message message = null;
-      try(Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)){
-        String fetch_sql = "SELECT * from queue_table where locked isnull order by time_added asc LIMIT 1 FOR UPDATE ";
-        try(ResultSet rs = stmt.executeQuery(fetch_sql)){
+      String fetch_sql = "SELECT * from queue_table where topic = ? and locked isnull order by time_added asc LIMIT 1 FOR UPDATE ";
+
+      try(PreparedStatement stmt = connection.prepareStatement(fetch_sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)){
+        stmt.setString(1, topic);
+        try(ResultSet rs = stmt.executeQuery()){
           while(rs.next()) {
             rs.updateTimestamp("locked", Timestamp.valueOf(LocalDateTime.now()));
             rs.updateString("locked_by", name);

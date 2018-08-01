@@ -29,7 +29,7 @@ public class ConsumerTest {
   @Test
   public void handleMessage(){
     MessageHandler messageHandler = (message -> System.out.println("Consumed: "+  message.toString()));
-    Consumer consumer = new Consumer("1", dataSource, messageHandler, 10, TimeUnit.MILLISECONDS);
+    Consumer consumer = new Consumer("1", dataSource, "topic1", messageHandler, 10, TimeUnit.MILLISECONDS);
     consumer.handleMessage(messageHandler);
   }
 
@@ -38,10 +38,10 @@ public class ConsumerTest {
 
     MessageHandler handler = (message -> message.toString());
 
-    Consumer consumer1 = new Consumer("1", dataSource, handler, 10, TimeUnit.MILLISECONDS);
-    Consumer consumer2 = new Consumer("2", dataSource, handler, 10, TimeUnit.MILLISECONDS);
-    Consumer consumer3 = new Consumer("3", dataSource, handler, 10, TimeUnit.MILLISECONDS);
-    Consumer consumer4 = new Consumer("4", dataSource, handler, 10, TimeUnit.MILLISECONDS);
+    Consumer consumer1 = new Consumer("1", dataSource, "topic1", handler, 10, TimeUnit.MILLISECONDS);
+    Consumer consumer2 = new Consumer("2", dataSource, "topic1", handler, 10, TimeUnit.MILLISECONDS);
+    Consumer consumer3 = new Consumer("3", dataSource, "topic1", handler, 10, TimeUnit.MILLISECONDS);
+    Consumer consumer4 = new Consumer("4", dataSource, "topic1", handler, 10, TimeUnit.MILLISECONDS);
 
     consumer1.start();
     consumer2.start();
@@ -50,7 +50,7 @@ public class ConsumerTest {
 
     for(int i=0; ; i++){
       Thread.sleep(100);
-      producer.produce("Hello world "+ i);
+      producer.produce("topic1", "Hello world "+ i);
     }
 
   }

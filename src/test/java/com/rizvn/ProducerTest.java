@@ -28,7 +28,7 @@ public class ProducerTest {
 
   @Test
   public void insertMessage(){
-    producer.produce("Hello world");
+    producer.produce("topic1", "Hello world");
   }
 
 }
