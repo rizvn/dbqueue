@@ -38,15 +38,30 @@ public class ConsumerTest {
 
     MessageHandler handler = (message -> message.toString());
 
-    Consumer consumer1 = new Consumer("1", dataSource, "topic1", handler, 100, TimeUnit.MILLISECONDS);
-    Consumer consumer2 = new Consumer("2", dataSource, "topic1", handler, 100, TimeUnit.MILLISECONDS);
+    Consumer consumer1 = new Consumer("1", dataSource, "topic1", handler, 1, TimeUnit.MILLISECONDS);
+    Consumer consumer2 = new Consumer("2", dataSource, "topic1", handler, 1, TimeUnit.MILLISECONDS);
+    Consumer consumer3 = new Consumer("3", dataSource, "topic1", handler, 1, TimeUnit.MILLISECONDS);
+    Consumer consumer4 = new Consumer("4", dataSource, "topic1", handler, 1, TimeUnit.MILLISECONDS);
+    Consumer consumer5 = new Consumer("5", dataSource, "topic1", handler, 1, TimeUnit.MILLISECONDS);
+    Consumer consumer6 = new Consumer("5", dataSource, "topic1", handler, 1, TimeUnit.MILLISECONDS);
+    Consumer consumer7 = new Consumer("5", dataSource, "topic1", handler, 1, TimeUnit.MILLISECONDS);
+    Consumer consumer8 = new Consumer("5", dataSource, "topic1", handler, 1, TimeUnit.MILLISECONDS);
+    Unlocker unlocker = new Unlocker(dataSource, 100, TimeUnit.MILLISECONDS, 3l);
 
     consumer1.start();
     consumer2.start();
+    consumer3.start();
+    consumer4.start();
+    consumer5.start();
+    consumer6.start();
+    consumer7.start();
+    consumer8.start();
+
+    unlocker.start();
 
     for(int i=0; ; i++){
-      Thread.sleep(100);
-      producer.produce("topic1", "Hello world "+ i);
+    //  Thread.sleep(100);
+   //   producer.produce("topic1", "Hello world "+ i);
     }
 
   }
