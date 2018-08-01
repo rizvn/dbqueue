@@ -15,13 +15,13 @@ public class Producer {
     this.dataSource = dataSource;
   }
 
-  public void produce(String topic, String message){
+  public void produce(String topic, String payload){
     try(Connection conn = dataSource.getConnection()){
-      String sql = "insert into message_queue (topic, message, time_added) values(?, ?, ?)";
+      String sql = "insert into message_queue (topic, payload, time_added) values(?, ?, ?)";
 
       try(PreparedStatement statement = conn.prepareStatement(sql)) {
         statement.setString(1, topic);
-        statement.setString(2, message);
+        statement.setString(2, payload);
         statement.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
         statement.execute();
       }
@@ -41,7 +41,7 @@ public class Producer {
         "   CREATE TABLE IF NOT EXISTS message_queue (           " +
         "    id  SERIAL PRIMARY KEY,   " +
         "    topic TEXT NOT NULL,      " +
-        "    message TEXT NOT NULL,    " +
+        "    payload TEXT NOT NULL,    " +
         "    time_added timestamp,     " +
         "    locked timestamp,         " +
         "    locked_by varchar(30)    " +

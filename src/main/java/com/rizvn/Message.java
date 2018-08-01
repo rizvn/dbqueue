@@ -5,7 +5,7 @@ package com.rizvn;
  */
 public class Message {
   Long messageId;
-  String text;
+  String payload;
 
   public Long getMessageId() {
     return messageId;
@@ -15,19 +15,19 @@ public class Message {
     this.messageId = messageId;
   }
 
-  public String getText() {
-    return text;
+  public String getPayload() {
+    return payload;
   }
 
-  public void setText(String text) {
-    this.text = text;
+  public void setPayload(String payload) {
+    this.payload = payload;
   }
 
   @Override
   public String toString() {
     return "Message{" +
     "messageId=" + messageId +
-    ", text='" + text + '\'' +
+    ", payload='" + payload + '\'' +
     '}';
   }
 }

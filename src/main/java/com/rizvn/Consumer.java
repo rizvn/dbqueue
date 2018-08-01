@@ -53,7 +53,7 @@ public class Consumer {
 
             message = new Message();
             message.setMessageId(rs.getLong("id"));
-            message.setText(rs.getString("message"));
+            message.setPayload(rs.getString("payload"));
             System.out.println("Consumer: "+ consumerName + " "+ message.toString());
             rs.updateRow();
           }
