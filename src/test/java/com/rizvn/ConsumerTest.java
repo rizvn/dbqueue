@@ -22,7 +22,6 @@ public class ConsumerTest {
     dataSource.setPassword("password");
     dataSource.setDefaultAutoCommit(false);
 
-
     producer = new Producer(dataSource);
   }
 

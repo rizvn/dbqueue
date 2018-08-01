@@ -3,7 +3,6 @@ package com.rizvn;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -14,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 public class Consumer {
 
   DataSource dataSource;
-  String name;
+  String consumerName;
   MessageHandler messageHandler;
   int pollingInterval;
   TimeUnit timeUnit;
@@ -22,8 +21,8 @@ public class Consumer {
 
   ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
 
-  public Consumer(String name, DataSource dataSource, String topic, MessageHandler messageHandler, int pollingInterval, TimeUnit timeUnit) {
-    this.name = name;
+  public Consumer(String consumerName, DataSource dataSource, String topic, MessageHandler messageHandler, int pollingInterval, TimeUnit timeUnit) {
+    this.consumerName = consumerName;
     this.dataSource = dataSource;
     this.pollingInterval = pollingInterval;
     this.timeUnit = timeUnit;
@@ -50,12 +49,12 @@ public class Consumer {
         try(ResultSet rs = stmt.executeQuery()){
           while(rs.next()) {
             rs.updateTimestamp("locked", Timestamp.valueOf(LocalDateTime.now()));
-            rs.updateString("locked_by", name);
+            rs.updateString("locked_by", consumerName);
 
             message = new Message();
             message.setMessageId(rs.getLong("id"));
             message.setText(rs.getString("message"));
-            System.out.println("Consumer: "+ name + " "+ message.toString());
+            System.out.println("Consumer: "+ consumerName + " "+ message.toString());
             rs.updateRow();
           }
         }
