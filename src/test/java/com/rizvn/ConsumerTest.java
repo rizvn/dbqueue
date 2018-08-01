@@ -38,8 +38,8 @@ public class ConsumerTest {
 
     MessageHandler handler = (message -> message.toString());
 
-    Consumer consumer1 = new Consumer("1", dataSource, "topic1", handler, 1, TimeUnit.SECONDS);
-    Consumer consumer2 = new Consumer("2", dataSource, "topic1", handler, 1, TimeUnit.SECONDS);
+    Consumer consumer1 = new Consumer("1", dataSource, "topic1", handler, 100, TimeUnit.MILLISECONDS);
+    Consumer consumer2 = new Consumer("2", dataSource, "topic1", handler, 100, TimeUnit.MILLISECONDS);
 
     consumer1.start();
     consumer2.start();
