@@ -17,7 +17,7 @@ public class Producer {
 
   public void produce(String topic, String message){
     try(Connection conn = dataSource.getConnection()){
-      String sql = "insert into queue_table (topic, message, time_added) values(?, ?, ?)";
+      String sql = "insert into message_queue (topic, message, time_added) values(?, ?, ?)";
 
       try(PreparedStatement statement = conn.prepareStatement(sql)) {
         statement.setString(1, topic);
@@ -38,7 +38,7 @@ public class Producer {
     try(Connection conn = dataSource.getConnection()){
       try(Statement statement = conn.createStatement()) {
         statement.execute("" +
-        "   CREATE TABLE IF NOT EXISTS queue_table (           " +
+        "   CREATE TABLE IF NOT EXISTS message_queue (           " +
         "    id  SERIAL PRIMARY KEY,   " +
         "    topic TEXT NOT NULL,      " +
         "    message TEXT NOT NULL,    " +

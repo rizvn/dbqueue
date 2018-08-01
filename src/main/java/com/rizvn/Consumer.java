@@ -42,7 +42,7 @@ public class Consumer {
     try(Connection connection = dataSource.getConnection()) {
       connection.setAutoCommit(false);
       Message message = null;
-      String fetch_sql = "SELECT * from queue_table where topic = ? and locked isnull order by time_added asc LIMIT 1 FOR UPDATE ";
+      String fetch_sql = "SELECT * from message_queue where topic = ? and locked isnull order by time_added asc LIMIT 1 FOR UPDATE ";
 
       try(PreparedStatement stmt = connection.prepareStatement(fetch_sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)){
         stmt.setString(1, topic);
@@ -79,7 +79,7 @@ public class Consumer {
 
   protected void releaseMessage(Message message){
     try(Connection conn = dataSource.getConnection()){
-      String sql = "update queue_table set locked  = NULL where id = ?";
+      String sql = "update message_queue set locked  = NULL where id = ?";
 
       try(PreparedStatement statement = conn.prepareStatement(sql)) {
         statement.setLong(1, message.getMessageId());
@@ -97,7 +97,7 @@ public class Consumer {
 
   protected void deleteMessage(Message message){
     try(Connection conn = dataSource.getConnection()){
-      String sql = "delete from queue_table where id = ?";
+      String sql = "delete from message_queue where id = ?";
 
       try(PreparedStatement statement = conn.prepareStatement(sql)) {
         statement.setLong(1, message.getMessageId());
