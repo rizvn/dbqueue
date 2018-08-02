@@ -61,7 +61,7 @@ public class ConsumerTest {
 
     for(int i=0; ; i++){
     //  Thread.sleep(100);
-   //   producer.produce("topic1", "Hello world "+ i);
+      producer.produce("topic1", "Hello world "+ i);
     }
 
   }
