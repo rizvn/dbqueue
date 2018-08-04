@@ -38,14 +38,16 @@ public class Producer {
     try(Connection conn = dataSource.getConnection()){
       try(Statement statement = conn.createStatement()) {
         statement.execute("" +
-        "   CREATE TABLE IF NOT EXISTS message_queue (           " +
-        "    id  SERIAL PRIMARY KEY,   " +
-        "    topic TEXT NOT NULL,      " +
-        "    payload TEXT NOT NULL,    " +
-        "    time_added timestamp,     " +
-        "    locked timestamp,         " +
+        "   CREATE TABLE message_queue (           " +
+        "    [id] bigint IDENTITY (1,1),   " +
+        "    topic varchar(30) NOT NULL,      " +
+        "    payload varchar(255) NOT NULL,    " +
+        "    time_added datetime,     " +
+        "    locked datetime,         " +
         "    locked_by varchar(30)    " +
         ")");
+
+
       }
       catch (Exception ex){
         throw new IllegalStateException(ex);

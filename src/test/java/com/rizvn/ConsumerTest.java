@@ -1,10 +1,10 @@
 package com.rizvn;
 
-import org.apache.tomcat.jdbc.pool.DataSource;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,13 +20,7 @@ public class ConsumerTest {
 
   @Before
   public void setup(){
-    dataSource = new DataSource();
-    dataSource.setUrl("jdbc:postgresql://localhost/queue_test");
-    dataSource.setUsername("postgres");
-    dataSource.setPassword("password");
-    dataSource.setDefaultAutoCommit(false);
-    dataSource.setMaxActive(20);
-
+    dataSource = TestUtils.buildDataSource();
     producer = new Producer(dataSource);
   }
 
@@ -35,6 +29,11 @@ public class ConsumerTest {
     MessageHandler messageHandler = (message -> System.out.println("Consumed: "+  message.toString()));
     Consumer consumer = new Consumer("1", dataSource, "topic1", messageHandler, 10, TimeUnit.MILLISECONDS);
     consumer.handleMessage(messageHandler);
+  }
+
+  @Test
+  public void createTable(){
+    producer.createQueueTable();
   }
 
   @Test
