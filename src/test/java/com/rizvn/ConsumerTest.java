@@ -5,9 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -59,11 +57,18 @@ public class ConsumerTest {
       producer.produce("topic1", "Hello world "+ i);
     }
 
-    Thread.sleep(5000);
+    Thread.sleep(10000);
 
-    List<Long> sortedList = new ArrayList(ids);
+    Set<Long> noDupes = new HashSet<Long>(ids);
+    List<Long> sortedList = new ArrayList<>(noDupes);
     Collections.sort(sortedList);
 
-    Assert.assertEquals(sortedList, ids);
+
+    Assert.assertEquals("Duplicates found", noDupes.size(), ids.size());
+
+    for(int i =0; i< sortedList.size(); i++){
+      Assert.assertEquals("Elements at position don't match",sortedList.get(i), ids.get(i));
+    }
+
   }
 }

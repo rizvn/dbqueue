@@ -42,8 +42,8 @@ public class Producer {
         "    [id] bigint IDENTITY (1,1),   " +
         "    topic varchar(30) NOT NULL,      " +
         "    payload varchar(255) NOT NULL,    " +
-        "    time_added datetime,     " +
-        "    locked datetime,         " +
+        "    time_added datetime2,     " +
+        "    locked datetime2,         " +
         "    locked_by varchar(30)    " +
         ")");
 

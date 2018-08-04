@@ -43,9 +43,9 @@ public class Consumer {
     try(Connection connection = dataSource.getConnection()) {
       connection.setAutoCommit(false);
       Message message = null;
-      String fetch_sql = "SELECT * from message_queue where topic = ? and locked isnull order by time_added asc LIMIT 1 FOR UPDATE ";
+      String fetch_sql = "SELECT TOP 1 * from message_queue (updlock) where topic = ? and locked is null order by time_added asc";
 
-      try(PreparedStatement stmt = connection.prepareStatement(fetch_sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)){
+      try(PreparedStatement stmt = connection.prepareStatement(fetch_sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)){
         stmt.setString(1, topic);
         try(ResultSet rs = stmt.executeQuery()){
           while(rs.next()) {
